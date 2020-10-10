@@ -1,0 +1,14 @@
+.leaflet-control-layers {
+    text-align: left;
+    /* background-color: transparent; */
+    background-color: rgba(230, 230, 230, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.leaflet-control-layers-toggle {
+    background-image: url('../../../../Images/layer.drawio.svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-color: rgba(230,230,230,0.6);
+    border: none
+}
