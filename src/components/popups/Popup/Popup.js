@@ -3,7 +3,7 @@ import {Popup} from 'react-leaflet';
 import DiveSite from '../DiveSite/DiveSite'
 import Spinner from '../../../utils/Spinner/Spinner';
 
-  const content = <Spinner/>
+  // const content = <Spinner/>
   const initialState = {
       loaded: false,
       siteData: {

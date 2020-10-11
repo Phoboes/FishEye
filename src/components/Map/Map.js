@@ -1,10 +1,11 @@
 import React from 'react';
 import { Map, Marker, Polygon } from 'react-leaflet';
-import Popup from '../popups/Popup/Popup'
+import Popup from '../popups/Popup/Popup';
 import './Map.css';
-import diveIcon from '../../Images/Markers/diveMarker'
-import Modal from '../Modal/Modal'
-import LayerControls from '../Map/Controls/LayerControl/LayerControls'
+import diveIcon from '../../Images/Markers/diveMarker';
+import Modal from '../Modal/Modal';
+import LayerControls from '../Map/Controls/LayerControl/LayerControls';
+import Toolbar from './Controls/Toolbar/Toolbar';
 
 let modal = null;
 let polygon = [
@@ -422,7 +423,7 @@ const MapWrapper = ( props ) => {
       return (
         <div>
           <div className="leaflet-container">
-              <Map center={[-34.040441,151.1988752]} zoom={13} onClick={ (e)=>{ polygon.push( Object.values(e.latlng) );  console.log(polygon)} }>
+              <Map center={[-34.040441,151.1988752]} zoom={13} onClick={ (e)=>{ /*polygon.push( Object.values(e.latlng) );  console.log(polygon)}*/ }}>
                 <LayerControls/>
                 <Marker 
                 position={[-34.04236522975801, 151.19794607162476]}
@@ -431,6 +432,7 @@ const MapWrapper = ( props ) => {
                   <Popup clicked={overlayHandler}>A popup!</Popup>
                 </Marker>
                  <Polygon color="purple" positions={polygon} onClick={()=>{console.log("You clicked the polygon!")}} />
+                 <Toolbar overlay={overlayHandler} />
               </Map>
             </div>
             { modal }
