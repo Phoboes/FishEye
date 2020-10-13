@@ -220,9 +220,9 @@
 
 /* zoom and fade animations */
 
-.leaflet-fade-anim .leaflet-tile {
-    will-change: opacity;
-}
+/* .leaflet-fade-anim .leaflet-tile {
+    will-change: opacity !important;
+} */
 
 .leaflet-fade-anim .leaflet-popup {
     opacity: 0;
@@ -241,9 +241,9 @@
     transform-origin: 0 0;
 }
 
-.leaflet-zoom-anim .leaflet-zoom-animated {
-    will-change: transform;
-}
+/* .leaflet-zoom-anim .leaflet-zoom-animated {
+    will-change: transform !important;
+} */
 
 .leaflet-zoom-anim .leaflet-zoom-animated {
     -webkit-transition: -webkit-transform 0.25s cubic-bezier(0, 0, 0.25, 1);
@@ -481,7 +481,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 /* Default icon URLs */
 .leaflet-default-icon-path {
-    /* background-image: url(images/marker-icon.png); */
+    background-image: url(../../Images/cross.svg);
 }
 
 

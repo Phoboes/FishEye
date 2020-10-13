@@ -4,7 +4,7 @@ import './Modal.css'
 
   const Modal = ( props ) => {
       return (
-          <Overlay clicked= {props.clicked }>
+          <Overlay>
             <div className="modal">
               { props.children? props.children : <p>Pending...</p> }
             </div>

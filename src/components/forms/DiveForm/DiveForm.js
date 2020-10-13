@@ -1,4 +1,5 @@
 import React from 'react';
+import './DiveForm.css';
 
   const DiveForm = ( props ) => {
       return (
