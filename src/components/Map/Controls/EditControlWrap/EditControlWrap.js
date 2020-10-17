@@ -1,30 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Control from 'react-leaflet-control';
-import NewDiveEditControls from '../../../forms/NewDiveSite/NewDiveSite';
-
+import NewSiteToolbar from '../../../forms/NewDiveSite/NewDiveSite';
 
   const EditControlWrap = ( props ) => {
-    const [ showControl, toggleShowControl ] = useState(false);
-    let markup = null;
-    const toggleHandler = () => {
-      toggleShowControl(!showControl)
+    let toolbar = null;
+
+    if( !props.toolbar ){
+      toolbar = <NewSiteToolbar/>
+    } else {
+      toolbar = props.toolbar;
     }
 
-    if( showControl ){
-      if(props.controls){
-        markup = props.controls;
-      } else {
-        markup = <NewDiveEditControls clicked={toggleHandler}/>
-      }
-    } else {
-      // debugger
-      markup = null;
-    }
+
 
       return (
           <Control position='topright'>
-            { markup }
-            <button onClick={toggleHandler}>Add</button>
+            { toolbar }
+            <button>Click me.</button>
           </Control>
       );
   }

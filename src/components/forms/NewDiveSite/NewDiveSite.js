@@ -6,58 +6,63 @@ import './NewDiveSite.css';
 import NewZoneForm from '../DiveZone/DiveSiteForm';
 import Popup from '../../Map/Popup/Popup';
 import POI from '../../Map/PointOfInterest/PointOfInterest';
-  // let jsxpop = <Popup><Zone/></Popup>
-
-  // Todo: Move this inside and un-break whatever it breaks.
-  // let completeForm = null;
 
   const NewDiveSite = ( props ) => {
     const [ polygon, setPolygon ] = useState({});
     const [ popup, setPopup ] = useState({show: false});
-    const [ editing, toggleEdit ] = useState(false)
+    // const [ editing, toggleEdit ] = useState(true);
+    const [ drawing, toggleDrawing ] = useState(false)
 
     let completeForm = null;
-    const toolbar = useRef(null)
+    let toggleDrawBar, toggleEditBar = null;
+    let toolbar = useRef(null);
 
-    // const clickHandlers=(ref)=>{
-    //   if(ref === null){ return }
-    //   const buttons = ref.leafletElement._toolbars
-    //   const drawContainer = buttons.draw._toolbarContainer
-    //   const editContainer = buttons.edit._toolbarContainer
+    const clickHandlers = (ref) => {
+      if(ref === null){ return }
+      // debugger
+      toolbar = ref;
+      const buttons = toolbar.leafletElement._toolbars
+      const drawContainer = buttons.draw._toolbarContainer
+      const editContainer = buttons.edit._toolbarContainer
 
-    //   const toggleDrawBar = ()=>{
-    //     drawContainer.style.display = "none"
-    //     editContainer.style.display = "block"
-    //     console.log("Clicked toggleDrawer")
-    //     toggleEdit(false);
-    //   }
-    //   const toggleEditBar = ()=>{
-    //     editContainer.style.display = "none"
-    //     drawContainer.style.display = "block"
-    //     console.log("Clicked toggleDrawer")
-    //     toggleEdit(true);
-    //   }
+      toggleDrawBar = () => {
+        if( drawing ){
+          drawContainer.style.display = "none"
+        } else {
+          drawContainer.style.display = "block"
+        }
+        toggleDrawing(!drawing);
+        console.log("ToggleDraw ")
+      }
 
-    //   if( !editing ){
-    //     toggleEditBar()
-    //   }
+      toggleEditBar = (enabled = false) => {
+        if( enabled ){
+          editContainer.style.display = "none"
+        } else {
+          editContainer.style.display = "block"
+        }
+        // toggleEdit(!editing);
+        console.log("ToggleEdit")
+      }
 
-    //   for(let i = 0; i < editContainer.children.length; i++ ){
-    //     editContainer.children[i].addEventListener('click', toggleDrawBar);
-    //   }
+        toggleEditBar()
 
-    //   for(let i = 0; i < drawContainer.children.length; i++ ){
-    //     drawContainer.children[i].addEventListener('click', toggleEditBar);
-    //   }
+      for(let i = 0; i < editContainer.children.length; i++ ){
+        editContainer.children[i].addEventListener('click', toggleDrawBar);
+      }
 
-    //   // buttons.draw._toolbarContainer.addEventListener('click', () => {
-    //   //   buttons.draw._toolbarContainer.style.display = "none"
-    //   //   buttons.edit._toolbarContainer.style.display = "block"
-    //   // });
+      for(let i = 0; i < drawContainer.children.length; i++ ){
+        drawContainer.children[i].addEventListener('click', toggleEditBar);
+      }
 
-    //   // debugger
-    //   // ref.leafletElement._toolbars
-    // }
+      // buttons.draw._toolbarContainer.addEventListener('click', () => {
+      //   buttons.draw._toolbarContainer.style.display = "none"
+      //   buttons.edit._toolbarContainer.style.display = "block"
+      // });
+
+      // debugger
+      // ref.leafletElement._toolbars
+    }
 
   const _onChange = (e, coords = null) => {
     if( e.layerType === "polygon" ){
@@ -154,7 +159,7 @@ import POI from '../../Map/PointOfInterest/PointOfInterest';
   return (
     <FeatureGroup ref={initPopup}>
       <EditControl
-        // ref={ clickHandlers }
+        ref={ clickHandlers }
         position='topright'
         onEdited={_onEditPath}
         onCreated={_onCreate}
