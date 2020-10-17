@@ -20,7 +20,7 @@ exports.index = function (req, res) {
 };
 
 exports.new = function (req, res) {
-    var diveZone = new DiveZone();
+    let diveZone = new DiveZone();
 
     diveZone.name = req.body.name ? req.body.name : diveZone.name;
     diveZone.boundaryPoints = req.body.positions
@@ -38,54 +38,40 @@ exports.new = function (req, res) {
 
 // Handle view diveZone info
 exports.view = function (req, res) {
-    if( parseInt(req.params.diveZone_id) ){
-        DiveZone.find({
-            index: req.params.diveZone_id
-        }, function (err, diveZone) {
+
+        DiveZone.findById(req.params.diveZone_id, function (err, diveZone) {
             if (err) {
                 res.send(err);
             } else {
                 res.json({
-                    message: 'diveZone details loading..',
+                    message: 'Success!',
                     data: diveZone
                 });
             }
         });
-    } else {
-        // Names are formatted, ensure the query matches the format for matching:
-        const name = req.params.diveZone_id.charAt(0).toUpperCase() + req.params.diveZone_id.slice(1).toLowerCase();
-         DiveZone.find({ name: name }, function (err, diveZone) {
-             if (err) {
-                 res.send(err);
-             } else {
-                 res.json({
-                     message: 'diveZone details loading..',
-                     data: diveZone
-                 });
-             }
-         });
-    }
 };
 
 // Handle update diveZone info
-exports.update = function (req, res) {DiveZone.findById(req.params.diveZone_id, function (err, diveZone) {
+exports.update = function (req, res) {
+    DiveZone.findById(req.params.diveZone_id, function (err, diveZone) {
+        debugger
     if (err)
     res.send(err);
 
     diveZone.name = req.body.name ? req.body.name : diveZone.name;
-    diveZone.boundaryPoints = req.body.boundaryPoints
+    diveZone.boundaryPoints = req.body.positions
     diveZone.description = req.body.description
     getIP.filterIP(req);
 
         // save the diveZone and check for errors
-        diveZone.save(function (err) {
-            if (err)
-                res.json(err);
-            res.json({
-                message: 'diveZone Info updated',
-                data: diveZone
-            });
+    diveZone.update(function (err) {
+        if (err)
+            res.json(err);
+        res.json({
+            message: 'diveZone Info updated',
+            data: diveZone
         });
+    });
     });
 };
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Polygon } from 'react-leaflet';
+import { Polygon, FeatureGroup } from 'react-leaflet';
 import Popup from '../Popup/Popup'
-import DiveSite from '../DiveSite/DiveSite'
+import DiveSite from '../DiveSiteInfo/DiveSiteInfo'
+import PolyEdit from './PolygonEdit';
 
   const Polygons = ( props ) => {
     const [ popupShow, setPopupState ] = useState({ show: false, coords: {} });
@@ -20,9 +21,14 @@ import DiveSite from '../DiveSite/DiveSite'
     };
 
     return (
-          <Polygon siteData={props.siteData} color={props.color} positions={props.siteData.boundaryPoints} onClick={popupHandler} >
-            { markup }
-          </Polygon>
+          // <Polygon siteData={props.siteData} color={props.color} positions={props.siteData.boundaryPoints} onClick={popupHandler} >
+          //   { markup }
+          // </Polygon>
+          <PolyEdit
+            siteData={props.siteData} 
+            color={props.color} 
+            positions={props.siteData.boundaryPoints}
+          />
     );
   }
 

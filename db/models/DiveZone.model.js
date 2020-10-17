@@ -7,7 +7,8 @@ var DiveZoneSchema = mongoose.Schema({
         max: 50
     },
     boundaryPoints: {
-        type: Array
+        type: Array,
+        required: true
     },
     description: {
         type: String,

@@ -1,7 +1,7 @@
 import React from 'react';
-import './DiveForm.css';
+import './VizReport.css';
 
-  const DiveForm = ( props ) => {
+  const VizReport = ( props ) => {
       return (
           <div>
             <h3>Dive site.</h3>
@@ -13,4 +13,4 @@ import './DiveForm.css';
       );
   }
 
-  export default DiveForm;
+  export default VizReport;
