@@ -7,7 +7,7 @@ import './DiveSiteForm.css';
   const formValues = props.siteData !== undefined ? {...props.siteData} : {};
   const [ formData, setFormData ] = useState(formValues)
 
-    props.editToolBarToggle();
+    // props.editToolBarToggle();
 
   const formSubmitHandler = ( e ) => {
     // These are used to toggle the popup form if this is a new shape and it submits successfully.
