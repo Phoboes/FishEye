@@ -1,25 +1,40 @@
 import React, { useState, useRef } from 'react';
-import { FeatureGroup } from 'react-leaflet';
+import { FeatureGroup, Popup } from 'react-leaflet';
 import { EditControl } from "react-leaflet-draw";
-import './NewDiveSite.css';
+import './NewDiveSiteToolbar.css';
 
-import NewZoneForm from '../DiveZone/DiveSiteForm';
-import Popup from '../../Map/Popup/Popup';
-import POI from '../../Map/PointOfInterest/PointOfInterest';
+import NewZoneForm from '../Form/DiveSiteForm';
+import DiveSiteInfo from '../DiveSiteInfo/DiveSiteInfo';
+// import POI from '../../Map/PointOfInterest/PointOfInterest';
 
   const NewDiveSite = ( props ) => {
     const [ polygon, setPolygon ] = useState({});
     const [ popup, setPopup ] = useState({show: false});
-    // const [ editing, toggleEdit ] = useState(true);
-    const [ drawing, toggleDrawing ] = useState(false)
+    const [ drawing, toggleDrawing ] = useState(false);
+    const [ formCompleted, setFormComplete ] = useState(false);
 
     let completeForm = null;
+    let popupContent = null;
     let toggleDrawBar, toggleEditBar = null;
     let toolbar = useRef(null);
 
+
+    const popupContentHandler = () => {
+      setFormComplete(true);
+    }
+
+    if( !formCompleted ){
+      popupContent = (
+        <NewZoneForm 
+          newShapeBounds={polygon.positions} 
+          refreshDataHandler={ props.refreshDataHandler } 
+          successResponse={ popupContentHandler }/>
+      );
+    } else {
+      popupContent = <DiveSiteInfo siteData={polygon}/>
+    }
     const clickHandlers = (ref) => {
       if(ref === null){ return }
-      // debugger
       toolbar = ref;
       const buttons = toolbar.leafletElement._toolbars
       const drawContainer = buttons.draw._toolbarContainer
@@ -41,7 +56,6 @@ import POI from '../../Map/PointOfInterest/PointOfInterest';
         } else {
           editContainer.style.display = "block"
         }
-        // toggleEdit(!editing);
         console.log("ToggleEdit")
       }
 
@@ -54,14 +68,6 @@ import POI from '../../Map/PointOfInterest/PointOfInterest';
       for(let i = 0; i < drawContainer.children.length; i++ ){
         drawContainer.children[i].addEventListener('click', toggleEditBar);
       }
-
-      // buttons.draw._toolbarContainer.addEventListener('click', () => {
-      //   buttons.draw._toolbarContainer.style.display = "none"
-      //   buttons.edit._toolbarContainer.style.display = "block"
-      // });
-
-      // debugger
-      // ref.leafletElement._toolbars
     }
 
   const _onChange = (e, coords = null) => {
@@ -69,11 +75,9 @@ import POI from '../../Map/PointOfInterest/PointOfInterest';
       coords = (e.layer.getLatLngs())[0];
       setPolygon({ positions: coords })
       setPopup({ position: e.target.options.center, show: true })
-      // triggerPop = e.layer
-      // debugger
     } else {
       coords = (e.layer.getLatLng());
-      props.overlay( <POI point={ coords } /> )
+      // props.overlay( <POI point={ coords } /> )
     }
   }
 
@@ -134,14 +138,12 @@ import POI from '../../Map/PointOfInterest/PointOfInterest';
   }
 
   const popupHandler = ()=>{
-    console.log("Popup!")
     if( popup.show ){
-      console.log(Popup)
       completeForm = (
         <Popup
           setLatLng={popup.position}
           >
-          <NewZoneForm positions={polygon.positions}/>
+          { popupContent }
         </Popup>
       )
     }
@@ -154,7 +156,6 @@ import POI from '../../Map/PointOfInterest/PointOfInterest';
         ref.leafletElement.openPopup();
       }
     }
-
 
   return (
     <FeatureGroup ref={initPopup}>

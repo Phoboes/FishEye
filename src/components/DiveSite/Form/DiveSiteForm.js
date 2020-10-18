@@ -4,39 +4,50 @@ import './DiveSiteForm.css';
 
   const DiveZone = ( props ) => {
 
-    const formValues = props.diveSite !== undefined ? {...props.diveSite} : {};
-    const [ formData, setFormData ] = useState(formValues)
+  const formValues = props.siteData !== undefined ? {...props.siteData} : {};
+  const [ formData, setFormData ] = useState(formValues)
+
+    props.editToolBarToggle();
 
   const formSubmitHandler = ( e ) => {
-    e.preventDefault();
+    // These are used to toggle the popup form if this is a new shape and it submits successfully.
+    const popup = e.currentTarget.parentNode.parentElement.parentElement.parentElement.parentElement;
+    const polygon = popup.parentElement;
+    e.preventDefault(e);
     const request = {
       url: 'http://localhost:8080/api',
       method: ''
     }
 
-    if( props.diveSite === undefined ){
-      // debugger
+    // If there's no data, it's a new shape.
+    if( props.siteData === undefined ){
       request.url = request.url + `/diveZones`;
       request.method = axios.post
     } else {
-      // debugger
-      request.url = request.url + `/diveZone/${ props.diveSite._id }`;
+      request.url = request.url + `/diveZone/${ props.siteData._id }`;
       request.method = axios.patch
     }
 
-    if( props.positions ){
-      formData.boundaryPoints = props.positions
+    // Deals with a shape that is entirely new, or an edit state.
+    if( props.newShapeBounds ){
+      formData.boundaryPoints = props.newShapeBounds
     }
 
+    // Sets the methods of either push or patch depending on the model type (new or existing)
     request.method(request.url, {...formData, positions: formData.boundaryPoints })
               .then(function (response) {
                 console.log(response);
-                props.successResponse();
+                props.refreshDataHandler();
+                if( props.updatePopupContent ){
+                  props.updatePopupContent( response.data.data );
+                  return
+                }
               })
               .catch(function (error) {
                 console.log(error);
               });
     console.log("SUBMIT.")
+    polygon.click();
   }
 
     console.log('Form rendered')
@@ -64,7 +75,7 @@ import './DiveSiteForm.css';
               <br/>
               <input type="text" id="description" name="description" defaultValue={formData.description} onChange={onChangeHandler}/>
               <br/>
-              <button>Submit</button>
+              <button>Submit</button><button onClick={ ()=>{ props.cancelEdit(); } }>Cancel</button>
             </form>
           </div>
       );

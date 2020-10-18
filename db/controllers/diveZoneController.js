@@ -53,25 +53,28 @@ exports.view = function (req, res) {
 
 // Handle update diveZone info
 exports.update = function (req, res) {
+
     DiveZone.findById(req.params.diveZone_id, function (err, diveZone) {
-        debugger
-    if (err)
-    res.send(err);
-
-    diveZone.name = req.body.name ? req.body.name : diveZone.name;
-    diveZone.boundaryPoints = req.body.positions
-    diveZone.description = req.body.description
-    getIP.filterIP(req);
-
-        // save the diveZone and check for errors
-    diveZone.update(function (err) {
-        if (err)
-            res.json(err);
-        res.json({
-            message: 'diveZone Info updated',
-            data: diveZone
+        if (err){
+            res.send(err);
+        }
+        
+        diveZone.name = req.body.name ? req.body.name : diveZone.name;
+        diveZone.boundaryPoints = req.body.positions
+        diveZone.description = req.body.description
+        getIP.filterIP(req);
+            // save the diveZone and check for errors
+        diveZone.update(function (err) {
+            if ( err ){
+                return res.json(err);
+            } else {
+                diveZone.save();
+                return res.json({
+                    message: diveZone.name + 'Info updated',
+                    data: diveZone
+                })
+            }
         });
-    });
     });
 };
 
