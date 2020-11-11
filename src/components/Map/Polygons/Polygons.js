@@ -66,7 +66,7 @@ import PolygonPopupContent from './PolygonPopup';
             color={props.color} 
             positions={props.siteData.boundaryPoints}
           >
-            { toolbar }
+            {/* { toolbar } */}
             <PolygonPopupContent 
               polygon={polygon}
               siteData={props.siteData} 

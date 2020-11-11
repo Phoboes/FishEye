@@ -1,5 +1,6 @@
 import React from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import { AiTwotoneDelete } from 'react-icons/ai';
 
   const DeleteButton = ( props ) => {
     const deleteSiteHandler = () => {
@@ -16,9 +17,7 @@ import axios from 'axios'
   }
 
       return (
-          <div>
-            <button onClick={deleteSiteHandler} >Remove Site</button>
-          </div>
+            <button onClick={deleteSiteHandler} >< AiTwotoneDelete /></button>
       );
   }
 
